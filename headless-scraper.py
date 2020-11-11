@@ -10,9 +10,11 @@ import pandas as pd
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 class Spring(object):
-    def __init__(self, Spring):
+    def __init__(self, crn, username, password):
         self.driver = webdriver.Chrome(executable_path='./chromedriver',options=chrome_options) 
-        self.Spring = Spring
+        self.crn = crn
+        self.username = username
+        self.password = password
     def login(self):
         count = 0
         try:
@@ -23,9 +25,9 @@ class Spring(object):
             sleep(2)
             #here you want to enter your username and password
             id_in = self.driver.find_element_by_xpath('//*[@id="loginForm:username"]')
-            id_in.send_keys('username')
+            id_in.send_keys(self.username)
             pass_in = self.driver.find_element_by_xpath('//*[@id="loginForm:password"]') 
-            pass_in.send_keys('password')
+            pass_in.send_keys(self.password)
             li_btn2 = self.driver.find_element_by_xpath('//*[@id="loginForm:loginButton"]')
             li_btn2.click()
             count+=1
@@ -45,7 +47,7 @@ class Spring(object):
             self.driver.find_element_by_xpath('//*[@id="term-go"]').click()
             count+=1
             sleep(2)
-            class1 = self.Spring
+            class1 = self.crn
             curr = '1'
             s = '"]'
             self.driver.find_element_by_xpath('//*[@id="enterCRNs-tab"]').click()
@@ -86,12 +88,12 @@ def check_open(file_path,line):
         return False
 
 def main(crns):
-    
+    username = input("Enter your PAWS username: ")
+    password = input("Enter your PAWS password: ")
     start_time = time.time()
     #running the while loop for 25 days
     aday = 2160000
     while time.time() < start_time + aday:
-        count += 1
         try:
             #This goes through each CRN after all CRN's have been ran it will loop again
             for index, row in crns.iterrows():
@@ -103,7 +105,7 @@ def main(crns):
                 file_path = getwebpage(url,crn)
                 test = check_open(file_path,line)
                 if test:
-                    bot = Spring(crn)
+                    bot = Spring(crn,username,password)
                     bot.login()
         except Exception as e:
             #sometimes the html request will be rejected if that happens it will just wait for a bit and then start main again

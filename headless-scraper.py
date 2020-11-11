@@ -6,6 +6,7 @@ from time import sleep
 import time
 from datetime import datetime
 import pandas as pd
+import getpass
 #This one is intended to be run on a vps so there is no need for a normal selenium window
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -89,7 +90,7 @@ def check_open(file_path,line):
 
 def main(crns):
     username = input("Enter your PAWS username: ")
-    password = input("Enter your PAWS password: ")
+    password = getpass.getpass("Enter your PAWS password: ")
     start_time = time.time()
     #running the while loop for 25 days
     aday = 2160000

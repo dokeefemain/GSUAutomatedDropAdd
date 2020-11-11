@@ -2,6 +2,7 @@ import urllib.request
 import subprocess
 import pandas as pd
 import numpy as np
+from time import sleep
 df = pd.DataFrame(columns = ['CRN', 'URL', 'Line'])
 test = input("How many classes would you like to watch?")
 for i in range(int(test)):
@@ -10,6 +11,7 @@ for i in range(int(test)):
     t = crn+".txt"
     urllib.request.urlretrieve(geturl, t)
     cmd = 'grep -n \"crn_in='+crn+'\" '+crn+'.txt | cut -f1 -d:'
+    sleep(1)
     line = str(subprocess.check_output(cmd,shell=True))
     num = ''
     for i in line:
